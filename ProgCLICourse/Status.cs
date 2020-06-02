@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace ProgCLICourse
 {
-    class Program
+    enum Status
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("HelloWorld!");
-        }
+        OK,
+        Failed,
+        Unexpected
     }
 }
