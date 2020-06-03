@@ -6,45 +6,48 @@ using System.Threading.Tasks;
 
 namespace ProgCLICourse
 {
+    
     class ShoppingList
     {
+        long sequence_number;
+
         private List<ShoppingNote> PurchaseList;
 
         public ShoppingList()
         {
-             this.PurchaseList = new List<ShoppingNote>();
+            this.PurchaseList = new List<ShoppingNote>();
+            sequence_number = 1;
         }
 
         public Status AddPurchase(String name, String comment, double spentamount, DateTime dateofpurchase)
         {
             if (spentamount < 0) return Status.Unexpected; 
 
-            long number = 0;
-            if (PurchaseList.Count() > 0)
-                number = PurchaseList.OrderBy(x => x.name).Last().number;
 
-            this.PurchaseList.Add(new ShoppingNote(name, comment, spentamount, dateofpurchase, number));
+            this.PurchaseList.Add(new ShoppingNote(name, comment, spentamount, dateofpurchase, sequence_number++));
 
             return Status.OK;
         }
 
         public Status RemovePurchase(long number)
         {
-            if (PurchaseList.All(x => x.number != number))
+            int count = PurchaseList.Count();
+            PurchaseList = PurchaseList.Where(x => x.number != number).ToList();
+            
+            if (count == PurchaseList.Count())
                 return Status.Failed;
 
-            PurchaseList.Remove(PurchaseList.Single(x=> x.number==number));
             return Status.OK;
         }
 
         public List<string> PurchasesRange(DateTime start, DateTime end)
         {
             List<string> notes = new List<string>();
-            PurchaseList.ForEach(x =>
-            {
+            
+            foreach(ShoppingNote x in PurchaseList)
                 if (x.dateofpurchase <= end && x.dateofpurchase >= start)
                     notes.Add(x.toString());
-            });
+
 
             return notes;
         }
