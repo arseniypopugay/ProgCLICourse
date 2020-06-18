@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ProgCLICourse
 {
-    
-    class ShoppingList
+    [Serializable]
+    public class ShoppingList
     {
         long sequence_number;
 
-        private List<ShoppingNote> PurchaseList;
+        public List<ShoppingNote> PurchaseList { get; private set; }
+
 
         public ShoppingList()
         {
@@ -31,10 +32,8 @@ namespace ProgCLICourse
 
         public Status RemovePurchase(long number)
         {
-            int count = PurchaseList.Count();
-            PurchaseList = PurchaseList.Where(x => x.number != number).ToList();
-            
-            if (count == PurchaseList.Count())
+            var index = PurchaseList.FindIndex(x => x.number != number);
+            if (index < 0)
                 return Status.Failed;
 
             return Status.OK;
@@ -47,9 +46,13 @@ namespace ProgCLICourse
             foreach(ShoppingNote x in PurchaseList)
                 if (x.dateofpurchase <= end && x.dateofpurchase >= start)
                     notes.Add(x.toString());
-
-
+                
             return notes;
+        }
+
+        public Status mergeList(List<ShoppingNote> another_list)
+        {
+            return Status.OK;
         }
 
 

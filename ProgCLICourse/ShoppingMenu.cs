@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,18 +14,24 @@ namespace ProgCLICourse
         
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome. Point of menu you want to start");
             
+
+            Console.WriteLine("Welcome. Point of menu you want to start");
+
+
             ShoppingList MainList = new ShoppingList();
+            
+            bool working = true;
 
-
-            for (;;)
+            while (working)
             {
                 Console.WriteLine(
                     "1. Add new purchase\n" +
                     "2. Remove previous purchase\n" +
                     "3. Show purchases in period of time\n" +
-                    "4. Exit from this program\n");
+                    "4. Load list of purchases from file\n" +
+                    "5. Save list of purchases into file\n" +
+                    "6. Exit from this program\n");
                 Console.Write(">> ");
                 switch (Console.ReadLine())
                 {
@@ -37,14 +45,17 @@ namespace ProgCLICourse
                         showPurchase(MainList);
                         break;
                     case "4":
-                        return;
+                        MainList = loadList();
+                        Console.WriteLine();
+                        break;
+                    case "5":
+                        saveList(MainList);
+                        break;
+                    case "6":
+                        working = false;
+                        break;
                 }
             }
-
-
-            
-
-
 
         }
 
@@ -127,6 +138,34 @@ namespace ProgCLICourse
                 return_list.ForEach(x => Console.WriteLine(x));
 
 
+        }
+
+        private static void saveList(ShoppingList MainList)
+        {
+            Console.WriteLine("Enter path and file name to save:");
+            try
+            {
+                XMLInteractor.save(Console.ReadLine(), MainList);
+                Console.WriteLine();
+            }
+                catch
+            {
+                Console.WriteLine("Hmmmmmmmmmmmm, Something went wrong");
+            }
+        }
+
+        private static ShoppingList loadList()
+        {
+            Console.WriteLine("Enter path and file name to load:");
+            try
+            {
+                return XMLInteractor.loadXML(Console.ReadLine());
+            }
+                catch
+            {
+                Console.WriteLine("Hmmmmmmmmmmmm, Something went wrong");
+                return new ShoppingList();
+            }
         }
     }
 }

@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace ProgCLICourse
 {
-    class ShoppingNote
+    [Serializable]
+    public class ShoppingNote
     {
         public String name { get; private set; }
         public String comment { get; private set; }
         public double spentamount { get; private set; }
         public DateTime dateofpurchase { get; private set; }
         public long number { get; private set; }
+
+        public ShoppingNote() { }
 
         public ShoppingNote(String name, String comment, double spentamount, DateTime dateofpurchase, long number)
         {

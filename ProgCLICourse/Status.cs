@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProgCLICourse
 {
-    enum Status
+    public enum Status
     {
         OK,
         Failed,

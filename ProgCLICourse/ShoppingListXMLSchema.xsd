@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="XMLSchema2"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="ShoppingList" type="ShoppingListType"/>
+
+  <xs:complexType name="ShoppingListType">
+    <xs:sequence>
+      <xs:element name="ShoppingNote" type="NoteType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NoteType">
+    <xs:sequence>
+      <xs:element name="Name" type="xs:string"/>
+      <xs:element name="Comment" type="xs:string"/>
+      <xs:element name="Spentamount" type="xs:double"/>
+      <xs:element name="Dateofpurchase" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+  
+
+</xs:schema>
