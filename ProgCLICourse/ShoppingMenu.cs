@@ -148,9 +148,9 @@ namespace ProgCLICourse
                 XMLInteractor.save(Console.ReadLine(), MainList);
                 Console.WriteLine();
             }
-                catch
+            catch (Exception e)
             {
-                Console.WriteLine("Hmmmmmmmmmmmm, Something went wrong");
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -161,9 +161,9 @@ namespace ProgCLICourse
             {
                 return XMLInteractor.loadXML(Console.ReadLine());
             }
-                catch
+                catch (Exception e)
             {
-                Console.WriteLine("Hmmmmmmmmmmmm, Something went wrong");
+                Console.WriteLine(e.Message);
                 return new ShoppingList();
             }
         }

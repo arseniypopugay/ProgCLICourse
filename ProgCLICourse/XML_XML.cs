@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Globalization;
+using System.Xml.Schema;
+using System.IO;
 
 namespace ProgCLICourse
 {
@@ -51,16 +53,25 @@ namespace ProgCLICourse
 
             
 
-            foreach (XmlElement note in doc.DocumentElement)
-            {
-                list.AddPurchase(
-                note.GetElementsByTagName("Name").Item(0).InnerText,
-                note.GetElementsByTagName("Comment").Item(0).InnerText,
-                double.Parse(note.GetElementsByTagName("Spentamount").Item(0).InnerText, CultureInfo.InvariantCulture),
-                System.DateTime.Parse(note.GetElementsByTagName("Dateofpurchase").Item(0).InnerText));
-            }
+            var schema = XmlSchema.Read(new MemoryStream(Encoding.UTF8.GetBytes(Properties.Resources.ShoppingListXMLSchema)), new ValidationEventHandler(ValidationCallbackOne));
+            doc.Schemas.Add(schema);
 
-            return list;
+            doc.Validate(new ValidationEventHandler(ValidationCallbackOne));
+
+                foreach (var s_list in doc.ChildNodes.OfType<XmlElement>().Where(e => e.Name == "ShoppingList"))
+                    foreach (var note in s_list.ChildNodes.OfType<XmlElement>().Where(e => e.Name == "ShoppingNote"))
+                    {
+                        list.AddPurchase(
+                        note.GetElementsByTagName("Name").Item(0).InnerText,
+                        note.GetElementsByTagName("Comment").Item(0).InnerText,
+                        double.Parse(note.GetElementsByTagName("Spentamount").Item(0).InnerText, CultureInfo.InvariantCulture),
+                        System.DateTime.Parse(note.GetElementsByTagName("Dateofpurchase").Item(0).InnerText));
+                    }
+                return list;
+        }
+        public static void ValidationCallbackOne(object sender, ValidationEventArgs args)
+        {
+            Console.WriteLine(args.Message);
         }
     }
 }

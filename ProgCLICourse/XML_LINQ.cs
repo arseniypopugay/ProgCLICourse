@@ -13,7 +13,8 @@ namespace ProgCLICourse
         public static ShoppingList loadFromXML(string path)
         {
             ShoppingList list = new ShoppingList();
-            XDocument.Load(path).Descendants("ShoppingNote").ToList().ForEach( note =>
+            XDocument.Load(path).Descendants("ShoppingList").ToList().First()
+                .Descendants("ShoppingNote").ToList().ForEach( note =>
                 list.AddPurchase((string)note.Element("Name"), (string)note.Element("Comment"),
                 (double)note.Element("Spentamount"), (System.DateTime)note.Element("Dateofpurchase")));
 
